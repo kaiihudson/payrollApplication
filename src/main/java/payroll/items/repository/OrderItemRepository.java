@@ -1,8 +1,8 @@
-package payroll.order.repository;
+package payroll.items.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import payroll.items.model.OrderItem;
 import payroll.order.model.AppOrder;
-import payroll.order.model.OrderItem;
 
 import java.util.List;
 

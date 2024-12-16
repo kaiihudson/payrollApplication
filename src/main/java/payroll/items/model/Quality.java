@@ -1,6 +1,6 @@
-package payroll.order.model;
+package payroll.items.model;
 
-enum Quality {
+public enum Quality {
     MINT, //
     NEAR_MINT, //
     EXCELELENT, //

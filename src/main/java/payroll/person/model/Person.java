@@ -21,8 +21,6 @@ public class Person {
     private String identity;
     private String address;
     private Status status;
-    @OneToMany(mappedBy = "id")
-    private List<AppOrder> orders = new ArrayList<AppOrder>();
 
     Person() {
     }

@@ -7,5 +7,5 @@ import payroll.person.model.Person;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<AppOrder, Long> {
-    List<AppOrder> findByBindUser(Person person);
+    List<AppOrder> findByBindUser(Person person_id);
 }
