@@ -3,8 +3,8 @@ package payroll.person.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import payroll.person.PersonNotActiveException;
-import payroll.person.PersonNotFoundException;
+import payroll.person.controller.PersonNotActiveException;
+import payroll.person.controller.PersonNotFoundException;
 import payroll.person.model.Status;
 import payroll.person.model.Person;
 import payroll.person.repository.PeopleRepository;
@@ -18,10 +18,8 @@ public class PersonService {
 		this.peopleRepository = peopleRepository;
 	}
 	
-	public List<Person> getAllPeople(){
-		List<Person> personList = peopleRepository.findAll();
-		personList.removeIf(person -> person.getStatus() == Status.INACTIVE);
-		return personList;
+	public List<Person> getAllPeople(){;
+        return peopleRepository.findPersonByStatus(Status.ACTIVE);
 	}
 	public Person createPerson(Person person) {
 		return peopleRepository.save(person);

@@ -25,13 +25,13 @@ public class Person {
     Person() {
     }
 
-    Person(String firstName, String lastName, String phoneNum, String identity, String address, Status status) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.phoneNum = phoneNum;
-        this.identity = identity;
-        this.status = status;
+    Person(Builder builder) {
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.address = builder.address;
+        this.phoneNum = builder.phoneNum;
+        this.identity = builder.identity;
+        this.status = builder.status;
     }
 
     public Long getId() {
@@ -98,6 +98,61 @@ public class Person {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public static class Builder{
+        private Long id;
+        private String firstName;
+        private String lastName;
+        private String name;
+        private String phoneNum;
+        private String identity;
+        private String address;
+        private Status status;
+
+        public Builder setId(Long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setPhoneNum(String phoneNum) {
+            this.phoneNum = phoneNum;
+            return this;
+        }
+
+        public Builder setIdentity(String identity) {
+            this.identity = identity;
+            return this;
+        }
+
+        public Builder setAddress(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder setStatus(Status status) {
+            this.status = status;
+            return this;
+        }
+
+        public Person build(){
+            return new Person(this);
+        }
     }
 
     @Override

@@ -4,12 +4,14 @@ import org.springframework.stereotype.Service;
 import payroll.order.controller.OrderNotFoundException;
 import payroll.order.model.AppOrder;
 
+import payroll.order.model.OrderStatus;
 import payroll.order.repository.OrderRepository;
 import payroll.person.model.Person;
 import payroll.person.repository.PeopleRepository;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -54,9 +56,16 @@ public class OrderService {
             return new ArrayList<>();
         }
     }
+    private AppOrder addPersonToOrder(AppOrder order, Person person) {
+        return new AppOrder.Builder()
+                .orderStatus(OrderStatus.CREATED)
+                .creationDate(new Date())
+                .bindUser(person)
+                .build();
+    }
 
-    public AppOrderDTO createOrder(AppOrder order) {
-        AppOrder savedOrder = orderRepository.save(order);
+    public AppOrderDTO createOrder(AppOrder order, Person person) {
+        AppOrder savedOrder = orderRepository.save(this.addPersonToOrder(order, person));
         return appOrderMapper.mapToDTO(savedOrder);
     }
 }

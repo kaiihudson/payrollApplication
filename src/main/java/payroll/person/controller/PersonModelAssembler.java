@@ -1,11 +1,10 @@
-package payroll.person;
+package payroll.person.controller;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
-import payroll.person.controller.PersonController;
 import payroll.person.model.Person;
 
 @Component

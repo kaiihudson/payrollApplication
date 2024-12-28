@@ -2,6 +2,7 @@ package payroll.items.controller;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,12 +26,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class OrderItemController {
     private final OrderItemService orderItemService;
     private final OrderService orderService;
-    private final OrderItemMapper orderItemMapper;
 
     public OrderItemController(OrderItemService orderItemService, OrderService orderService, OrderItemMapper orderItemMapper) {
         this.orderItemService = orderItemService;
         this.orderService = orderService;
-        this.orderItemMapper = orderItemMapper;
     }
 
     @GetMapping("/order/{id}/items")
@@ -39,22 +38,16 @@ public class OrderItemController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
-    @PostMapping("/order/{id}/items")
+    @PostMapping("/order/{id}/item")
     public ResponseEntity<?> newItem(@RequestBody OrderItem item, @PathVariable("id") Long id) {
         AppOrder order = orderService.getRawOrderById(id);
-        OrderItemDTO newItem = orderItemService
-                .createOrderItem(
-                        new OrderItem.Builder()
-                                .responsible(item.getResponsible())
-                                .itemName(item.getItemName())
-                                .quantity(item.getQuantity())
-                                .reportedPrice(item.getReportedPrice())
-                                .mainQuality(item.getMainQuality())
-                                .alternateQuality(item.getAlternateQuality())
-                                .source(item.getSource())
-                                .orderId(order)
-                                .build()
-                );
+        OrderItemDTO newItem = orderItemService.createOrderItem(item, order);
         return new ResponseEntity<>(newItem, HttpStatus.OK);
+    }
+    @PostMapping("/order/{id}/items")
+    public ResponseEntity<?> newItems(@RequestBody List<OrderItem> items, @PathVariable("id") Long id) {
+        AppOrder order = orderService.getRawOrderById(id);
+        List<OrderItemDTO> newItems = orderItemService.createBatchOrderItems(items, order);
+        return new ResponseEntity<>(newItems, HttpStatus.OK);
     }
 }

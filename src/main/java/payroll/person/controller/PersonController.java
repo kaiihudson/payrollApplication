@@ -11,7 +11,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
-import payroll.person.PersonModelAssembler;
 import payroll.person.service.PersonService;
 import payroll.person.model.Status;
 import payroll.person.model.Person;

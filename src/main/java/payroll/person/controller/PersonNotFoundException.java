@@ -1,4 +1,4 @@
-package payroll.person;
+package payroll.person.controller;
 
 public class PersonNotFoundException extends RuntimeException {
 	public PersonNotFoundException(Long id) {

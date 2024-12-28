@@ -64,13 +64,7 @@ public class OrderController {
     ResponseEntity<?> newOrder(@RequestBody AppOrder newOrder) {
         Person person = personService.getPersonById(newOrder.getUserId());
         AppOrderDTO order = orderService
-                .createOrder(
-                    new AppOrder.Builder()
-                    .orderStatus(OrderStatus.CREATED)
-                    .creationDate(new Date())
-                    .bindUser(person)
-                    .build()
-        );
+                .createOrder(newOrder, person);
         EntityModel<AppOrderDTO> entityModel = orderDTOModelAssembler //
                 .toModel(order);
         return ResponseEntity //
