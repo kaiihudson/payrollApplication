@@ -45,10 +45,27 @@ public class OrderService {
                 .orElseThrow(() -> new OrderNotFoundException(id));
     }
 
-    public List<AppOrderDTO> getOrderByUserId(Long person_id) {
+    public List<AppOrderDTO> getIncompleteOrderByUserId(Long person_id) {
         Optional<Person> person = peopleRepository.findById(person_id);
         if (person.isPresent()) {
-            List<AppOrder> orders = orderRepository.findByBindUser(person.get());
+            List<AppOrder> orders = orderRepository.findByBindUserAndOrderStatusNotOrderByRetailerAsc(
+                    person.get(),
+                    OrderStatus.COMPLETE
+            );
+            return orders.stream()
+                    .map(appOrderMapper::mapToDTO)
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList<>();
+        }
+    }
+    public List<AppOrderDTO> getCompleteOrderByUserId(Long person_id) {
+        Optional<Person> person = peopleRepository.findById(person_id);
+        if(person.isPresent()) {
+            List<AppOrder> orders = orderRepository.findByBindUserAndOrderStatus(
+                    person.get(),
+                    OrderStatus.COMPLETE
+            );
             return orders.stream()
                     .map(appOrderMapper::mapToDTO)
                     .collect(Collectors.toList());

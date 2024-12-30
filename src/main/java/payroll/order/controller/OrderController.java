@@ -9,14 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import payroll.order.model.AppOrder;
-import payroll.order.model.OrderStatus;
 import payroll.order.service.AppOrderDTO;
-import payroll.order.service.AppOrderMapper;
 import payroll.order.service.OrderService;
 import payroll.person.model.Person;
 import payroll.person.service.PersonService;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,9 +48,17 @@ public class OrderController {
 
     @GetMapping("/order")
     CollectionModel<EntityModel<AppOrderDTO>> allByUser(@RequestParam Long id) {
-        Person person = personService.getPersonById(id);
         List<AppOrderDTO> orderList = orderService //
-                .getOrderByUserId(person.getId());
+                .getIncompleteOrderByUserId(id);
+        List<EntityModel<AppOrderDTO>> modelOrderList = orderList.stream() //
+                .map(orderDTOModelAssembler::toModel) //
+                .collect(Collectors.toList());
+        return CollectionModel.of(modelOrderList, linkTo(methodOn(OrderController.class).all()).withSelfRel());
+    }
+    @GetMapping("/complete_order")
+    CollectionModel<EntityModel<AppOrderDTO>> allByUserWhereComplete(@RequestParam Long id) {
+        List<AppOrderDTO> orderList = orderService //
+                .getCompleteOrderByUserId(id);
         List<EntityModel<AppOrderDTO>> modelOrderList = orderList.stream() //
                 .map(orderDTOModelAssembler::toModel) //
                 .collect(Collectors.toList());
