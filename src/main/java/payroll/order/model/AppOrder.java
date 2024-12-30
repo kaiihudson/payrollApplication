@@ -14,6 +14,7 @@ public class AppOrder {
     private OrderStatus orderStatus;
     private Date creationDate;
     private Date executionDate;
+    private String retailer;
 
     @Transient
     private Long userId;
@@ -31,6 +32,7 @@ public class AppOrder {
         this.executionDate = build.executionDate;
         this.userId = build.userId;
         this.bindUser = build.bindUser;
+        this.retailer = build.retailer;
     }
 
     public Long getId() {
@@ -57,6 +59,10 @@ public class AppOrder {
         return executionDate;
     }
 
+    public String getRetailer() {
+        return retailer;
+    }
+
     public static class Builder {
 
         private Long id;
@@ -65,6 +71,7 @@ public class AppOrder {
         private Date executionDate;
         private Long userId;
         private Person bindUser;
+        private String retailer;
 
         public Builder executionDate(Date executionDate) {
             this.executionDate = executionDate;
@@ -93,6 +100,11 @@ public class AppOrder {
 
         public Builder id(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder retailer(String retailer) {
+            this.retailer = retailer;
             return this;
         }
 

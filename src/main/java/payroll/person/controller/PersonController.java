@@ -36,7 +36,6 @@ public class PersonController {
     }
 
     @PostMapping("/people")
-    @CrossOrigin(originPatterns = "http://localhost:4200")
     ResponseEntity<?> newPerson(@RequestBody Person newPerson) {
         newPerson.setStatus(Status.ACTIVE);
         EntityModel<Person> entityModel = assembler.toModel(service.createPerson(newPerson));
@@ -61,7 +60,6 @@ public class PersonController {
     }
 
     @DeleteMapping("/person/{id}")
-    @CrossOrigin(originPatterns = "http://localhost:4200")
     ResponseEntity<?> deletePerson(@PathVariable("id") Long id) {
         service.deletePersonByID(id);
         return ResponseEntity.noContent().build();

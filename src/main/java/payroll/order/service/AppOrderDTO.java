@@ -10,12 +10,14 @@ public class AppOrderDTO {
     private OrderStatus orderStatus;
     private Date creationDate;
     private Long userId;
+    private String retailer;
 
     public AppOrderDTO(Builder build) {
         this.id = build.id;
         this.orderStatus = build.orderStatus;
         this.creationDate = build.creationDate;
         this.userId = build.userId;
+        this.retailer = build.retailer;
     }
 
     public Long getId() {
@@ -33,11 +35,17 @@ public class AppOrderDTO {
     public Long getUserId() {
         return userId;
     }
+
+    public String getRetailer() {
+        return retailer;
+    }
+
     public static class Builder {
         private Long id;
         private OrderStatus orderStatus;
         private Date creationDate;
         private Long userId;
+        private String retailer;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -58,6 +66,11 @@ public class AppOrderDTO {
             this.userId = userId;
             return this;
         }
+        public Builder setRetailer(String retailer) {
+            this.retailer = retailer;
+            return this;
+        }
+
         public AppOrderDTO build() {
             return new AppOrderDTO(this);
         }
