@@ -1,18 +1,21 @@
 package payroll.items.service;
 
 import payroll.items.model.Quality;
+import payroll.items.model.ItemsStatus;
 
 public class OrderItemDTO {
     private Long id;
     private String responsible;
     private String itemName;
     private int quantity;
-    private float reportedPrice;
-    private float totalPrice;
+    private Float reportedPrice;
+    private Float totalPrice;
     private Quality mainQuality;
-    private Quality alternativeQuality;
+    private Quality alternateQuality;
     private String source;
     private Long orderId;
+    private ItemsStatus itemItemsStatus;
+    private String retailer;
 
     public OrderItemDTO(Builder build) {
         this.id = build.id;
@@ -22,9 +25,19 @@ public class OrderItemDTO {
         this.reportedPrice = build.reportedPrice;
         this.totalPrice = build.totalPrice;
         this.mainQuality = build.mainQuality;
-        this.alternativeQuality = build.alternativeQuality;
+        this.alternateQuality = build.alternateQuality;
         this.source = build.source;
         this.orderId = build.orderId;
+        this.itemItemsStatus = build.itemItemsStatus;
+        this.retailer = build.retailer;
+    }
+
+    public String getRetailer() {
+        return retailer;
+    }
+
+    public ItemsStatus getItemItemsStatus() {
+        return itemItemsStatus;
     }
 
     public Long getId() {
@@ -43,11 +56,11 @@ public class OrderItemDTO {
         return quantity;
     }
 
-    public float getReportedPrice() {
+    public Float getReportedPrice() {
         return reportedPrice;
     }
 
-    public float getTotalPrice() {
+    public Float getTotalPrice() {
         return totalPrice;
     }
 
@@ -55,8 +68,8 @@ public class OrderItemDTO {
         return mainQuality;
     }
 
-    public Quality getAlternativeQuality() {
-        return alternativeQuality;
+    public Quality getAlternateQuality() {
+        return alternateQuality;
     }
 
     public String getSource() {
@@ -67,17 +80,23 @@ public class OrderItemDTO {
         return orderId;
     }
 
+    public ItemsStatus getItemStatus() {
+        return itemItemsStatus;
+    }
+
     public static class Builder {
         private Long id;
         private String responsible;
         private String itemName;
         private int quantity;
-        private float reportedPrice;
-        private float totalPrice;
+        private Float reportedPrice;
+        private Float totalPrice;
         private Quality mainQuality;
-        private Quality alternativeQuality;
+        private Quality alternateQuality;
         private String source;
         private Long orderId;
+        private ItemsStatus itemItemsStatus;
+        private String retailer;
 
         public OrderItemDTO build() {
             return new OrderItemDTO(this);
@@ -118,8 +137,8 @@ public class OrderItemDTO {
             return this;
         }
 
-        public Builder setAlternativeQuality(Quality alternativeQuality) {
-            this.alternativeQuality = alternativeQuality;
+        public Builder setAlternateQuality(Quality alternateQuality) {
+            this.alternateQuality = alternateQuality;
             return this;
         }
 
@@ -130,6 +149,16 @@ public class OrderItemDTO {
 
         public Builder setOrderId(Long orderId) {
             this.orderId = orderId;
+            return this;
+        }
+
+        public Builder setItemStatus(ItemsStatus itemsStatus) {
+            this.itemItemsStatus = itemsStatus;
+            return this;
+        }
+
+        public Builder setRetailer(String retailer) {
+            this.retailer = retailer;
             return this;
         }
     }

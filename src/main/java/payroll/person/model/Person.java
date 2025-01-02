@@ -1,12 +1,8 @@
 package payroll.person.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.*;
-import payroll.order.model.AppOrder;
-import payroll.person.model.Status;
 
 @Entity
 @Table(name = "people")
@@ -20,7 +16,7 @@ public class Person {
     private String phoneNum;
     private String identity;
     private String address;
-    private Status status;
+    private PersonStatus status;
 
     Person() {
     }
@@ -92,11 +88,11 @@ public class Person {
         this.address = address;
     }
 
-    public Status getStatus() {
+    public PersonStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(PersonStatus status) {
         this.status = status;
     }
 
@@ -108,7 +104,7 @@ public class Person {
         private String phoneNum;
         private String identity;
         private String address;
-        private Status status;
+        private PersonStatus status;
 
         public Builder setId(Long id) {
             this.id = id;
@@ -145,7 +141,7 @@ public class Person {
             return this;
         }
 
-        public Builder setStatus(Status status) {
+        public Builder setStatus(PersonStatus status) {
             this.status = status;
             return this;
         }
@@ -178,7 +174,7 @@ public class Person {
                 "phoneNum=" + this.phoneNum + '\'' + ", " +//
                 "identity=" + this.identity + '\'' + ", " +//
                 "address=" + this.address + '\'' + ", " +//
-                "status=" + this.status +//
+                "personStatus=" + this.status +//
                 "}";
     }
 }

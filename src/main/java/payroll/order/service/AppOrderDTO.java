@@ -1,6 +1,6 @@
 package payroll.order.service;
 
-import payroll.order.model.AppOrder;
+
 import payroll.order.model.OrderStatus;
 
 import java.util.Date;
@@ -11,6 +11,8 @@ public class AppOrderDTO {
     private Date creationDate;
     private Long userId;
     private String retailer;
+    private Date executionDate;
+    private Float orderTotal;
 
     public AppOrderDTO(Builder build) {
         this.id = build.id;
@@ -18,6 +20,8 @@ public class AppOrderDTO {
         this.creationDate = build.creationDate;
         this.userId = build.userId;
         this.retailer = build.retailer;
+        this.executionDate = build.executionDate;
+        this.orderTotal = build.orderTotal;
     }
 
     public Long getId() {
@@ -40,15 +44,34 @@ public class AppOrderDTO {
         return retailer;
     }
 
+    public Date getExecutionDate() {
+        return executionDate;
+    }
+
+    public Float getOrderTotal() {
+        return orderTotal;
+    }
+
+    public void setOrderTotal(Float orderTotal) {
+        this.orderTotal = orderTotal;
+    }
+
     public static class Builder {
         private Long id;
         private OrderStatus orderStatus;
         private Date creationDate;
         private Long userId;
         private String retailer;
+        private Date executionDate;
+        private Float orderTotal;
 
         public Builder setId(Long id) {
             this.id = id;
+            return this;
+        }
+
+        public Builder setOrderTotal(float orderTotal) {
+            this.orderTotal = orderTotal;
             return this;
         }
 
@@ -66,8 +89,14 @@ public class AppOrderDTO {
             this.userId = userId;
             return this;
         }
+
         public Builder setRetailer(String retailer) {
             this.retailer = retailer;
+            return this;
+        }
+
+        public Builder setExecutionDate(Date date) {
+            this.executionDate = date;
             return this;
         }
 

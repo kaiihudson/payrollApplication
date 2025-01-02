@@ -1,18 +1,21 @@
 package payroll.person.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import org.springframework.data.domain.Page;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+import org.springframework.hateoas.EntityModel;
 
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
+import payroll.person.service.PersonDTO;
 import payroll.person.service.PersonService;
-import payroll.person.model.Status;
+import payroll.person.model.PersonStatus;
 import payroll.person.model.Person;
 
 @RestController
@@ -26,34 +29,31 @@ public class PersonController {
         this.assembler = assembler;
     }
 
+
     @GetMapping("/people")
-    public CollectionModel<EntityModel<Person>> all() {
-        List<Person> person = service.getAllPeople();
-        List<EntityModel<Person>> modelPerson = person.stream() //
-                .map(assembler::toModel) //
-                .collect(Collectors.toList());
-        return CollectionModel.of(modelPerson, linkTo(methodOn(PersonController.class).all()).withSelfRel());
+    public HttpEntity<PagedModel<Person>> all(@PageableDefault(size = 15, sort = "id") Pageable p, PagedResourcesAssembler pagedAssembler) {
+        Page<EntityModel<PersonDTO>> people = service.getAllPeople(p);
+        return ResponseEntity.ok(pagedAssembler.toModel(people));
     }
 
     @PostMapping("/people")
     ResponseEntity<?> newPerson(@RequestBody Person newPerson) {
-        newPerson.setStatus(Status.ACTIVE);
-        EntityModel<Person> entityModel = assembler.toModel(service.createPerson(newPerson));
+        newPerson.setStatus(PersonStatus.ACTIVE);
+        EntityModel<PersonDTO> entityModel = assembler.toModel(service.createPerson(newPerson));
         return ResponseEntity //
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
                 .body(entityModel);
     }
 
     @GetMapping("/person/{id}")
-    public EntityModel<Person> one(@PathVariable("id") Long id) {
-        Person person = service.getPersonById(id);
+    public EntityModel<PersonDTO> one(@PathVariable("id") Long id) {
+        PersonDTO person = service.getPersonDTOById(id);
         return assembler.toModel(person);
     }
-
     @PutMapping("/person/{id}")
     ResponseEntity<?> replacePerson(@RequestBody Person newPerson, @PathVariable("id") Long id) {
-        Person updatedPerson = service.replacePersonById(id, newPerson);
-        EntityModel<Person> entityModel = assembler.toModel(updatedPerson);
+        PersonDTO updatedPerson = service.replacePersonById(id, newPerson);
+        EntityModel<PersonDTO> entityModel = assembler.toModel(updatedPerson);
         return ResponseEntity //
                 .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())//
                 .body(entityModel);

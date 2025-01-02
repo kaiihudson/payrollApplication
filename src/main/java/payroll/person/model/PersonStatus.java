@@ -1,6 +1,6 @@
 package payroll.person.model;
 
-public enum Status {
+public enum PersonStatus {
     ACTIVE, //
     INACTIVE
 }

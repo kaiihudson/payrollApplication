@@ -1,10 +1,13 @@
 package payroll.items.service;
 
-import org.aspectj.weaver.ast.Or;
+
 import org.springframework.stereotype.Service;
+import payroll.items.exception.OrderIsProcessing;
+import payroll.items.model.ItemsStatus;
 import payroll.order.model.AppOrder;
 import payroll.items.model.OrderItem;
 import payroll.items.repository.OrderItemRepository;
+import payroll.order.model.OrderStatus;
 import payroll.order.repository.OrderRepository;
 
 import java.util.ArrayList;
@@ -34,13 +37,22 @@ public class OrderItemService {
                 .mainQuality(item.getMainQuality())
                 .alternateQuality(item.getAlternateQuality())
                 .source(item.getSource())
+                .status(ItemsStatus.CREATED)
                 .orderId(order)
                 .build();
     }
 
     public OrderItemDTO createOrderItem(OrderItem item, AppOrder order) {
-        OrderItem newItem = orderItemRepository.save(this.addOrderToItem(item, order));
-        return orderItemMapper.mapToDTO(newItem);
+        Optional<AppOrder> newOrder = orderRepository.findById(order.getId());
+        if (newOrder.isPresent()) {
+            if (newOrder.get().getOrderStatus() == OrderStatus.CREATED) {
+                OrderItem newItem = orderItemRepository.save(this.addOrderToItem(item, newOrder.get()));
+                return orderItemMapper.mapToDTO(newItem);
+            } else {
+                throw new OrderIsProcessing(newOrder.get().getId());
+            }
+        }
+        return null;
     }
     private List<OrderItem> addOrdertoItemList(List<OrderItem> items, AppOrder order) {
         List<OrderItem> cleanItemList = new ArrayList<>();
@@ -54,15 +66,26 @@ public class OrderItemService {
                     .mainQuality(subject.getMainQuality())
                     .alternateQuality(subject.getAlternateQuality())
                     .source(subject.getSource())
+                    .status(ItemsStatus.CREATED)
+                    .retailer(subject.getRetailer())
                     .orderId(order)
                     .build();
             cleanItemList.add(result);
         }
         return cleanItemList;
     }
+
     public List<OrderItemDTO> createBatchOrderItems(List<OrderItem> items, AppOrder order) {
-        List<OrderItem> newItems = orderItemRepository.saveAll(this.addOrdertoItemList(items, order));
-        return newItems.stream().map(orderItemMapper::mapToDTO).collect(Collectors.toList());
+        Optional<AppOrder> newOrder = orderRepository.findById(order.getId());
+        if (newOrder.isPresent()) {
+            if (newOrder.get().getOrderStatus() == OrderStatus.CREATED) {
+                List<OrderItem> newItems = orderItemRepository.saveAll(this.addOrdertoItemList(items, order));
+                return newItems.stream().map(orderItemMapper::mapToDTO).collect(Collectors.toList());
+            } else {
+                throw new OrderIsProcessing(newOrder.get().getId());
+            }
+        }
+        return null;
     }
 
     public List<OrderItemDTO> getItemsByOrder(Long orderId) {
@@ -77,4 +100,11 @@ public class OrderItemService {
         }
     }
 
+    public List<OrderItemDTO> getItemsByOrderList(List<Long> orderIdList) {
+        List<AppOrder> orders = orderRepository.findByIdIn(orderIdList);
+        return orderItemRepository.findByOrderIdInOrderByRetailer(orders)
+                .stream()
+                .map(orderItemMapper::mapToDTO)
+                .collect(Collectors.toList());
+    }
 }

@@ -1,11 +1,13 @@
 package payroll.person.repository;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import payroll.person.model.Person;
-import payroll.person.model.Status;
-
-import java.util.List;
+import payroll.person.model.PersonStatus;
 
 public interface PeopleRepository extends JpaRepository<Person, Long> {
-    List<Person> findPersonByStatus(Status status);
+
+    Page<Person> findPersonByStatus(PersonStatus personStatus, Pageable pageable);
 }

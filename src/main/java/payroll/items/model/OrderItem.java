@@ -1,7 +1,6 @@
 package payroll.items.model;
 
 import jakarta.persistence.*;
-import jakarta.persistence.criteria.Order;
 import payroll.order.model.AppOrder;
 
 @Entity
@@ -13,11 +12,13 @@ public class OrderItem {
     private String responsible;
     private String itemName;
     private int quantity;
-    private float reportedPrice;
-    private float totalPrice;
+    private Float reportedPrice;
+    private Float totalPrice;
     private Quality mainQuality;
     private Quality alternateQuality;
     private String source;
+    private ItemsStatus itemItemsStatus;
+    private String retailer;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "app_order_id", nullable = false)
@@ -36,6 +37,8 @@ public class OrderItem {
         this.alternateQuality = builder.alternateQuality;
         this.source = builder.source;
         this.orderId = builder.orderId;
+        this.itemItemsStatus = builder.itemItemsStatus;
+        this.retailer = builder.retailer;
     }
 
     public Long getId() {
@@ -46,6 +49,14 @@ public class OrderItem {
         return responsible;
     }
 
+    public ItemsStatus getItemItemsStatus() {
+        return itemItemsStatus;
+    }
+
+    public String getRetailer() {
+        return retailer;
+    }
+
     public String getItemName() {
         return itemName;
     }
@@ -54,12 +65,12 @@ public class OrderItem {
         return quantity;
     }
 
-    public float getReportedPrice() {
+    public Float getReportedPrice() {
         return reportedPrice;
     }
 
-    public float getTotalPrice() {
-        return totalPrice;
+    public Float getTotalPrice() {
+        return quantity * reportedPrice;
     }
 
     public Quality getMainQuality() {
@@ -78,6 +89,10 @@ public class OrderItem {
         return orderId;
     }
 
+    public ItemsStatus getItemStatus() {
+        return itemItemsStatus;
+    }
+
     public static class Builder {
         private Long id;
         private String responsible;
@@ -89,6 +104,13 @@ public class OrderItem {
         private Quality alternateQuality;
         private String source;
         private AppOrder orderId;
+        private ItemsStatus itemItemsStatus;
+        private String retailer;
+
+        public Builder retailer(String retailer) {
+            this.retailer = retailer;
+            return this;
+        }
 
         public Builder setId(Long id) {
             this.id = id;
@@ -115,6 +137,7 @@ public class OrderItem {
             return this;
         }
 
+
         public Builder totalPrice(float totalPrice) {
             this.totalPrice = totalPrice;
             return this;
@@ -137,6 +160,11 @@ public class OrderItem {
 
         public Builder orderId(AppOrder orderId) {
             this.orderId = orderId;
+            return this;
+        }
+
+        public Builder status(ItemsStatus itemsStatus) {
+            this.itemItemsStatus = itemsStatus;
             return this;
         }
 

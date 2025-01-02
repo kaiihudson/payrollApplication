@@ -3,9 +3,10 @@ package payroll.items.model;
 public enum Quality {
     MINT, //
     NEAR_MINT, //
-    EXCELELENT, //
+    EXCELLENT, //
     GOOD, //
     LIGHTLY_PLAYED, //
     PLAYED, //
-    POOR
+    POOR, //
+    EMPTY
 }

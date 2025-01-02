@@ -1,8 +1,8 @@
 package payroll.order.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import payroll.person.model.Person;
+import payroll.person.service.PersonDTO;
 
 import java.util.*;
 
@@ -18,6 +18,7 @@ public class AppOrder {
 
     @Transient
     private Long userId;
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "person_orders", nullable = false)
@@ -63,6 +64,34 @@ public class AppOrder {
         return retailer;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
+    }
+
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setExecutionDate(Date executionDate) {
+        this.executionDate = executionDate;
+    }
+
+    public void setRetailer(String retailer) {
+        this.retailer = retailer;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public void setBindUser(Person bindUser) {
+        this.bindUser = bindUser;
+    }
+
     public static class Builder {
 
         private Long id;
@@ -72,6 +101,8 @@ public class AppOrder {
         private Long userId;
         private Person bindUser;
         private String retailer;
+
+
 
         public Builder executionDate(Date executionDate) {
             this.executionDate = executionDate;

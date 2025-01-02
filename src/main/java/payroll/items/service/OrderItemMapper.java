@@ -14,22 +14,26 @@ public class OrderItemMapper {
                 .setReportedPrice(orderItem.getReportedPrice())
                 .setTotalPrice(orderItem.getTotalPrice())
                 .setMainQuality(orderItem.getMainQuality())
-                .setAlternativeQuality(orderItem.getAlternateQuality())
+                .setAlternateQuality(orderItem.getAlternateQuality())
                 .setSource(orderItem.getSource())
                 .setOrderId(orderItem.getOrderId().getId())
+                .setItemStatus(orderItem.getItemStatus())
+                .setRetailer(orderItem.getRetailer())
                 .build();
     }
+
     OrderItem mapFromDTO(OrderItemDTO orderItem) {
         return new OrderItem.Builder()
                 .setId(orderItem.getId())
                 .responsible(orderItem.getResponsible())
                 .itemName(orderItem.getItemName())
                 .quantity(orderItem.getQuantity())
-                .alternateQuality(orderItem.getAlternativeQuality())
+                .alternateQuality(orderItem.getAlternateQuality())
                 .mainQuality(orderItem.getMainQuality())
                 .reportedPrice(orderItem.getReportedPrice())
                 .source(orderItem.getSource())
                 .totalPrice(orderItem.getTotalPrice())
+                .status(orderItem.getItemStatus())
                 .build();
     }
 }

@@ -1,4 +1,4 @@
-package payroll.person.controller;
+package payroll.person.exception;
 
 public class PersonNotActiveException extends RuntimeException {
     public PersonNotActiveException(Long id) {
