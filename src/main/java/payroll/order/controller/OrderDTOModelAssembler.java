@@ -8,6 +8,9 @@ import payroll.order.service.AppOrderDTO;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+/**
+ * The type Order dto model assembler.
+ */
 @Component
 public class OrderDTOModelAssembler implements RepresentationModelAssembler<AppOrderDTO, EntityModel<AppOrderDTO>> {
 

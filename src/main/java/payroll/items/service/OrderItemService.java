@@ -1,6 +1,6 @@
 package payroll.items.service;
 
-import org.aspectj.weaver.ast.Or;
+
 import org.springframework.stereotype.Service;
 import payroll.order.model.AppOrder;
 import payroll.items.model.OrderItem;
@@ -12,6 +12,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * The type Order item service.
+ */
 @Service
 public class OrderItemService {
 
@@ -19,6 +22,13 @@ public class OrderItemService {
     private final OrderItemMapper orderItemMapper;
     private final OrderRepository orderRepository;
 
+    /**
+     * Instantiates a new Order item service.
+     *
+     * @param orderItemRepository the order item repository
+     * @param orderItemMapper     the order item mapper
+     * @param orderRepository     the order repository
+     */
     OrderItemService(OrderItemRepository orderItemRepository, OrderItemMapper orderItemMapper, OrderRepository orderRepository) {
         this.orderItemRepository = orderItemRepository;
         this.orderItemMapper = orderItemMapper;
@@ -38,6 +48,13 @@ public class OrderItemService {
                 .build();
     }
 
+    /**
+     * Create order item order item dto.
+     *
+     * @param item  the item
+     * @param order the order
+     * @return the order item dto
+     */
     public OrderItemDTO createOrderItem(OrderItem item, AppOrder order) {
         OrderItem newItem = orderItemRepository.save(this.addOrderToItem(item, order));
         return orderItemMapper.mapToDTO(newItem);
@@ -60,11 +77,25 @@ public class OrderItemService {
         }
         return cleanItemList;
     }
+
+    /**
+     * Create batch order items list.
+     *
+     * @param items the items
+     * @param order the order
+     * @return the list
+     */
     public List<OrderItemDTO> createBatchOrderItems(List<OrderItem> items, AppOrder order) {
         List<OrderItem> newItems = orderItemRepository.saveAll(this.addOrdertoItemList(items, order));
         return newItems.stream().map(orderItemMapper::mapToDTO).collect(Collectors.toList());
     }
 
+    /**
+     * Gets items by order.
+     *
+     * @param orderId the order id
+     * @return the items by order
+     */
     public List<OrderItemDTO> getItemsByOrder(Long orderId) {
         Optional<AppOrder> order = orderRepository.findById(orderId);
         if (order.isPresent()){

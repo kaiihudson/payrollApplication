@@ -7,6 +7,9 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 import payroll.person.model.Person;
 
+/**
+ * The type Person model assembler.
+ */
 @Component
 public class PersonModelAssembler implements RepresentationModelAssembler<Person, EntityModel<Person>> {
 	

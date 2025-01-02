@@ -6,8 +6,10 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 import payroll.order.model.AppOrder;
-import payroll.order.service.AppOrderDTO;
 
+/**
+ * The type Order model assembler.
+ */
 @Component
 public class OrderModelAssembler implements RepresentationModelAssembler<AppOrder, EntityModel<AppOrder>> {
 
